@@ -1,0 +1,19 @@
+if [[ $2 == "" ]]; then
+    VERSION="81"
+else
+    VERSION=$2
+fi
+
+cp /opt/homebrew/etc/httpd/vhosts/example.conf-new /opt/homebrew/etc/httpd/vhosts/$1.conf
+sed -i -e "s/example\.test/$1\.test/g" /opt/homebrew/etc/httpd/vhosts/$1.conf
+sed -i -e "s/\$PHPVERSION/${VERSION//.}/g" /opt/homebrew/etc/httpd/vhosts/$1.conf
+code /opt/homebrew/etc/httpd/vhosts/$1.conf
+mkdir /Users/ronmarsden/www/$1.test
+mkdir /Users/ronmarsden/www/$1.test/src
+
+cd /opt/homebrew/etc/httpd/certs
+mkcert $1.test
+
+cd -
+
+brew services restart httpd

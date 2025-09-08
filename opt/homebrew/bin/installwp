@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+echo "Downloading WordPress from https://wordpress.org..."
+wget -q https://wordpress.org/latest.zip
+
+echo "Expanding archive..."
+unzip -q latest.zip
+cd wordpress
+mv * ../
+
+cd ..
+echo "Performing cleanup..."
+rm latest.zip
+rm -rf wordpress
+
+echo "Done!"
+phpstorm .

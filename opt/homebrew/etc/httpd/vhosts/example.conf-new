@@ -1,0 +1,37 @@
+Define DOMAIN "example.test"
+Define DOCROOT "/Users/ronmarsden/www/${DOMAIN}/src"
+Define PHPVERSION $PHPVERSION
+
+<VirtualHost *:80>
+    ServerAdmin test@localhost
+    DocumentRoot ${DOCROOT}
+    ServerName ${DOMAIN}
+    ServerAlias www.${DOMAIN}
+    ErrorLog "/opt/homebrew/var/log/httpd/${DOMAIN}-error_log"
+    CustomLog "/opt/homebrew/var/log/httpd/${DOMAIN}-access_log" common
+
+    ProxyPassMatch "^/(.*\.php(/.*)?)$" "fcgi://127.0.0.1:90${PHPVERSION}${DOCROOT}/$1"
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:fcgi://127.0.0.1:90${PHPVERSION}"
+    </FilesMatch>
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerAdmin test@localhost
+    DocumentRoot ${DOCROOT}
+    ServerName ${DOMAIN}
+    ServerAlias www.${DOMAIN}
+    ErrorLog "/opt/homebrew/var/log/httpd/${DOMAIN}-error_log"
+    CustomLog "/opt/homebrew/var/log/httpd/${DOMAIN}-access_log" common
+
+    SSLEngine on
+    SSLCertificateFile /opt/homebrew/etc/httpd/certs/${DOMAIN}.pem
+    SSLCertificateKeyFile /opt/homebrew/etc/httpd/certs/${DOMAIN}-key.pem
+
+    ProxyPassMatch "^/(.*\.php(/.*)?)$" "fcgi://127.0.0.1:90${PHPVERSION}${DOCROOT}/$1"
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:fcgi://127.0.0.1:90${PHPVERSION}"
+    </FilesMatch>
+</VirtualHost>

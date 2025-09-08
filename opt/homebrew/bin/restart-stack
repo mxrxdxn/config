@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+brew services restart php@5.6
+brew services restart php@7.0
+brew services restart php@7.1
+brew services restart php@7.2
+brew services restart php@7.3
+brew services restart php@7.4
+brew services restart php@8.0
+brew services restart php@8.1
+brew services restart php@8.2
+brew services restart php@8.3
+brew services restart php@8.4
+brew services restart httpd

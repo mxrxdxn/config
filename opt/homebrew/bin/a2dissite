@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+mv /opt/homebrew/etc/httpd/vhosts/$1.conf /opt/homebrew/etc/httpd/disabled-vhosts/$1.conf
+brew services restart httpd
